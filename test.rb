@@ -3,14 +3,15 @@ require "open-uri"
 require "json"
 
 class GetAccountData
-
-  def initialize
-    @nemAddress = "NEM_ADDRESS"
+  atter_accessor :address, :info
+  def initialize(address:, info:)
+    self.address = address
+    self.info = info
   end
 
   def getAccountData(type="account")
     path = "account/get"
-    json =  OpenURI.open_uri("http://104.238.161.61:7890/#{path}?address=#{@nemAddress}")
+    json =  OpenURI.open_uri("http://104.238.161.61:7890/#{path}?address=#{self.address}")
 
     r = JSON.load(json)[type]
 
