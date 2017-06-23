@@ -10,7 +10,7 @@ class GetAccountData
   end
 
   def getAccountData(type="account")
-    node_list = ["104.238.161.61", "	62.75.251.134", "108.61.182.27", "	108.61.168.86"]
+    node_list = ["104.238.161.61", "62.75.251.134", "108.61.182.27", "108.61.168.86"]
     super_node = node_list[rand(node_list.length)]
     path = "account/get"
     json =  OpenURI.open_uri("http://#{super_node}:7890/#{path}?address=#{self.address}")
@@ -19,8 +19,8 @@ class GetAccountData
     return r
   end
 
-  def printAccountData(i=info)
-    for n in i
+  def printAccountData()
+    for n in info
       if n == "address" then
         puts "Address is #{getAccountData[n]}"
       elsif n == "balance" then
