@@ -3,7 +3,7 @@ require "open-uri"
 require "json"
 
 class GetAccountData
-  atter_accessor :address, :info
+  attr_accessor :address, :info
   def initialize(address:, info:)
     self.address = address
     self.info = info
@@ -18,7 +18,7 @@ class GetAccountData
     return r
   end
 
-  def printAccountData(i)
+  def printAccountData(i = self.info)
     for n in i
       if n == "address" then
         puts "Address is #{getAccountData[n]}"
@@ -34,10 +34,3 @@ class GetAccountData
     end
   end
 end
-
-
-puts "address: balance: importance: harvestedBlocks:  remoteStatus"
-i = gets.split(" ")
-
-addr = GetAccountData.new
-addr.printAccountData(i)
