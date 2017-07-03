@@ -37,7 +37,6 @@ class GetAccountData
   def getAccountData(type="account")
     path = "account/get"
     json =  OpenURI.open_uri("http://#{nis}:7890/#{path}?address=#{@address}")
-
     r = JSON.load(json)[type]  #if type is "meta", this shows status, remoteStatus, cosignatoryOf
     return r
   end
@@ -60,7 +59,16 @@ class GetAccountData
 end
 
 class Crypto
+  attr_accessor :nis
+  def initialize
+    @nis = nis
+  end
 
+  def generate_account
+    json = OpenURI.open_uri("http://#{nis}:7890/account/generate")
+    r = JSON.load(json)
+    return r
+  end
 
 
 end
