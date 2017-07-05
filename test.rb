@@ -60,6 +60,13 @@ class GetAccountData
     return r
   end
 
+  def incoming_transactions
+    json = OpenURI.open_uri("http://#{nis}:7890/account/transfers/incoming?address=#{@address}")
+    r = JSON.load(json)
+
+    return r
+  end
+
   def printAccountData(info)
     for n in info
       if n == "address" then
