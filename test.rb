@@ -27,21 +27,40 @@ class Nis
 end
 
 class GetAccountData
-  attr_accessor :address, :info, :nis
-  def initialize(address:, info:, nis:)
+  attr_accessor :address, :nis
+  def initialize(address:, nis:)
     @address = address
-    @info = info
     @nis = nis
   end
 
-  def getAccountData(type="account")
-    path = "account/get"
-    json =  OpenURI.open_uri("http://#{nis}:7890/#{path}?address=#{@address}")
-    r = JSON.load(json)[type]  #if type is "meta", this shows status, remoteStatus, cosignatoryOf
+  def get_account_data()
+    json =  OpenURI.open_uri("http://#{nis}:7890/account/get?address=#{@address}")
+    r = JSON.load(json)  #if type is "meta", this shows status, remoteStatus, cosignatoryOf
     return r
   end
 
-  def printAccountData()
+  def delegate_account()
+    json = OpenURI.open_uri("http://#{nis}:7890/account/get/forwarded?address=#{@address}")
+    r =  JSON.load(json)
+
+    return r
+  end
+
+  def delegate_account_from_publickey(pubkey)
+    json = OpenURI.open_uri("http://#{nis}:7890/account/get/forwarded/from-public-key?publicKey=#{pubkey}")
+    r = JSON.load(json)
+
+    return r
+  end
+
+  def account_status
+    json = OpenURI.open_uri("http://#{nis}:7890/account/status?address=#{@address}")
+    r = JSON.load(json)
+
+    return r
+  end
+
+  def printAccountData(info)
     for n in info
       if n == "address" then
         puts "Address is #{getAccountData()[n]}"
