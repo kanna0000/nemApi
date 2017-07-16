@@ -5,7 +5,7 @@ require "json"
 class Nis
 
   def node_select
-    node_list = ["50.3.87.123", "37.120.188.83", "23.228.67.85", "104.128.226.60", "	188.68.50.161", "	150.95.145.157", "192.3.61.243"] #test net
+    node_list = ["50.3.87.123", "37.120.188.83", "23.228.67.85", "104.128.226.60", "188.68.50.161", "150.95.145.157", "192.3.61.243"] #test net
     @selected_node = node_list[rand(node_list.length)]
     return @selected_node
   end
@@ -44,7 +44,7 @@ class GetAccountData
     @param = "address=#{@address}"
   end
 
-  def delegate_account()
+  def delegate_account
     @api_path = "account/get/forwarded"
     @param = "address=#{@address}"
   end
