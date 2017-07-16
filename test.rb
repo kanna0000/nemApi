@@ -5,23 +5,23 @@ require "json"
 class Nis
 
   def node_select
-    node_list = ["37.187.70.29", "150.95.145.157", "23.228.67.85", "104.128.226.60"] #test net
+    node_list = ["50.3.87.123", "37.120.188.83", "23.228.67.85", "104.128.226.60", "	188.68.50.161", "	150.95.145.157", "192.3.61.243"] #test net
     @selected_node = node_list[rand(node_list.length)]
     return @selected_node
   end
 
-  def heart_beat
-    json =  OpenURI.open_uri("http://#{@selected_node}:7890/heartbeat")
-
+  def call_api
+    json =  OpenURI.open_uri("http://#{@selected_node}:7890/#{@api_path}")
     r = JSON.load(json)
     return r
   end
 
-  def status
-    json =  OpenURI.open_uri("http://#{@selected_node}:7890/status")
+  def heart_beat
+    @api_path = "heartbeat"
+  end
 
-    r = JSON.load(json)
-    return r
+  def status
+    @api_path = "status"
   end
 
 end
@@ -33,37 +33,35 @@ class GetAccountData
     @nis = nis
   end
 
-  def get_account_data()
-    json =  OpenURI.open_uri("http://#{nis}:7890/account/get?address=#{@address}")
-    r = JSON.load(json)  #if type is "meta", this shows status, remoteStatus, cosignatoryOf
+  def call_api
+    json =  OpenURI.open_uri("http://#{@nis}:7890/#{@api_path}?#{@param}")
+    r = JSON.load(json)
     return r
+  end
+
+  def get_account_data
+    @api_path = "account/get"
+    @param = "address=#{@address}"
   end
 
   def delegate_account()
-    json = OpenURI.open_uri("http://#{nis}:7890/account/get/forwarded?address=#{@address}")
-    r =  JSON.load(json)
-
-    return r
+    @api_path = "account/get/forwarded"
+    @param = "address=#{@address}"
   end
 
   def delegate_account_from_publickey(pubkey)
-    json = OpenURI.open_uri("http://#{nis}:7890/account/get/forwarded/from-public-key?publicKey=#{pubkey}")
-    r = JSON.load(json)
-
-    return r
+    @api_path = "account/get/forwarded/from-public-key"
+    @param = "publicKey=#{pubkey}"
   end
 
   def account_status
-    json = OpenURI.open_uri("http://#{nis}:7890/account/status?address=#{@address}")
-    r = JSON.load(json)
-
-    return r
+    @api_path = "account/status"
+    @param = "?address=#{@address}"
   end
 
   def incoming_transactions
-    json = OpenURI.open_uri("http://#{nis}:7890/account/transfers/incoming?address=#{@address}")
-    r = JSON.load(json)
-
+    @api_path = "account/transfers/incoming"
+    @param = "address=#{@address}"
     return r
   end
 
@@ -91,10 +89,6 @@ class Crypto
   end
 
   def generate_account
-    json = OpenURI.open_uri("http://#{nis}:7890/account/generate")
-    r = JSON.load(json)
-    return r
+    @api_path = "account/generate"
   end
-
-
 end
